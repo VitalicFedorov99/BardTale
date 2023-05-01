@@ -27,6 +27,9 @@ public class ManagerGameDialog : MonoBehaviour
     [SerializeField] private StateGame stateGame = StateGame.Preparation;
 
 
+    [SerializeField] private Manager21Score manager;
+    [SerializeField] private GameObject gameBoard;
+
     private bool isEndGame = false;
     private int counterPlayer;
     private int counterEnemy;
@@ -45,7 +48,7 @@ public class ManagerGameDialog : MonoBehaviour
         enemy.SetupInterlocutor(3);
 
         player = new Interlocutor();
-        player.SetupInterlocutor(4);
+        player.SetupInterlocutor(3);
         SetInterlocutor(enemy, player);
         Setup(5);
     }
@@ -54,6 +57,23 @@ public class ManagerGameDialog : MonoBehaviour
     {
         this.maxScore = maxScore;
         isEndGame = false;
+    }
+
+    public void Open() 
+    {
+        textHint.gameObject.SetActive(true);
+        textScoreEnemy.gameObject.SetActive(true);
+        textScorePlayer.gameObject.SetActive(true);
+        gameBoard.SetActive(true);
+        Preparation();
+    }
+
+    public void Close() 
+    {
+        textHint.gameObject.SetActive(false);
+        textScoreEnemy.gameObject.SetActive(false);
+        textScorePlayer.gameObject.SetActive(false);
+        gameBoard.SetActive(false);
     }
 
     public void Battle()
@@ -74,16 +94,22 @@ public class ManagerGameDialog : MonoBehaviour
                 MoveChipEnemy(placeEnemy[i].GetChip(), i);
             }
 
-            if (placeEnemy[i].GetChip() == null && placePlayer[i].GetChip() != null)
+        /*    if (placeEnemy[i].GetChip() == null && placePlayer[i].GetChip() != null)
             {
                 MoveChipsPlayer(placePlayer[i].GetChip(), i);
-            }
+            }*/
         }
 
-        CountScore();
+       // CountScore();
        // Preparation();
     }
 
+
+    public void OpenGame21Score() 
+    {
+        Close();
+        manager.OpenGame();
+    }
     public void Preparation()
     {
         Clear();
@@ -113,6 +139,15 @@ public class ManagerGameDialog : MonoBehaviour
 
         EnemyPut();
 
+    }
+
+    public void AcceptResult21Score(int result) 
+    {
+        scorePlayer += result;
+        manager.CloseGame();
+        Clear();
+        CountScore();
+        Open();
     }
 
     public void StepEnemy()
