@@ -78,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
             //Vector3 position = (transform.forward * _move.y * speed) + (transform.right * _move.x * speed * Time.deltaTime);
             //transform.position += position;
             agent.Move(transform.TransformDirection(normDirection) * speed * Time.deltaTime);
+            //character.Move(transform.TransformDirection(normDirection) * speed * Time.deltaTime);
         }
     }
 }

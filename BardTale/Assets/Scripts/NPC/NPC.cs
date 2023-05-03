@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UnityEngine.AI;
-public class NPC : MonoBehaviour
+public class NPC : MonoBehaviour , IInteraction
 {
     [SerializeField] protected string nameNPC;
     [SerializeField] protected Animator animator;
@@ -17,7 +17,7 @@ public class NPC : MonoBehaviour
 
 
     private GameObject pointWalk;
-
+    [SerializeField] private GameObject objSitdown;  
     public void Walk(GameObject point)
     {
         agent.SetDestination(point.transform.position);
@@ -31,16 +31,54 @@ public class NPC : MonoBehaviour
         animator.SetBool("Clap", true);
     }
 
-    public void EndClap()
+    public void SitTalk() 
     {
-        animator.SetBool("Clap", false);
+        animator.SetTrigger("Talk");
     }
+
+
+    public void Talk(int number) 
+    {
+        animator.SetTrigger("Talk");
+        animator.SetInteger("Type", number);
+    }
+    public void Clap(int number) 
+    {
+        animator.SetBool("Clap", true);
+        animator.SetInteger("TypeClap", number);
+    }
+
+   /* public void SitDown() 
+    {
+        animator.SetTrigger("SitDown");
+    }*/
 
     public void Dance(int number) 
     {
         animator.SetBool("Dance", true);
         animator.SetInteger("TypeDance", number);
     }
+
+    public void Angry(int number) 
+    {
+        animator.SetBool("Angry", true);
+        animator.SetInteger("TypeAngry", number);
+    }
+
+    public void Angry() 
+    {
+        animator.SetBool("Angry", true);
+    }
+
+    public void EndAngry() 
+    {
+        animator.SetBool("Angry", false);
+    }
+
+    public void StartAnim(string name) => animator.SetBool(name, true);
+
+    public void EndAnim(string name) => animator.SetBool(name, false);
+
     protected virtual void Setup()
     {
         currentAction = new ActionWalk(this, "Walk");
@@ -63,16 +101,26 @@ public class NPC : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        state = StateNPC.Idle;
+        //state = StateNPC.Idle;
         Setup();
     }
 
+    public void Interaction()
+    {
+        
+    }
 
-
+    public string GetName()
+    {
+        return nameNPC;
+    }
 }
 
 public enum StateNPC
 {
     Walk,
-    Idle
+    Idle,
+    Sit
 }
+
+
