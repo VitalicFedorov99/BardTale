@@ -18,4 +18,9 @@ public class StorageDialogOneDay : MonoBehaviour
     {
         return storage.GetDialogues(id);
     }
+
+    public bool CheckMiniGame(int id, out int lose, out int win)
+    {
+        return storage.CheckMiniGame(id, out lose, out win);
+    }
 }

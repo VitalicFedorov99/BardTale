@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e033bccdc6aae9745add86ccca710302, type: 3}
-  m_Name: WithTavernKeeper
+  m_Name: WithAnna
   m_EditorClassIdentifier: 
   dialogues:
-  - 11111111111111111111|1
-  - 2222222222222222222|1
-  - 333333333333|1
-  id: 0
+  - "\u0423 \u043C\u0435\u043D\u044F \u0437\u043D\u0430\u043A\u043E\u043C\u044B\u0439
+    \u0438\u043D\u0442\u0435\u0440\u0435\u0441\u0443\u0435\u0442\u0441\u044F, \u0447\u0442\u043E
+    \u0442\u0435\u0431\u0435 \u043D\u0440\u0430\u0432\u0438\u0442\u0441\u044F?!|1|2|p|2"
+  id: 4
+  isMiniGame: 0
+  numberDialogueWin: 0
+  numberDialogueLose: 0

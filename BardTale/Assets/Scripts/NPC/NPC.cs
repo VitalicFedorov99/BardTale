@@ -8,16 +8,17 @@ public class NPC : MonoBehaviour , IInteraction
     [SerializeField] protected string nameNPC;
     [SerializeField] protected Animator animator;
     [SerializeField] protected NavMeshAgent agent;
-
+    [SerializeField] protected int idNPC;
     [SerializeField] protected AbstractNPCAction currentAction;
 
     [SerializeField] protected StateNPC state;
 
 
 
-
     private GameObject pointWalk;
-    [SerializeField] private GameObject objSitdown;  
+    
+
+    public int GetIdNPC() => idNPC;
     public void Walk(GameObject point)
     {
         agent.SetDestination(point.transform.position);
@@ -107,12 +108,17 @@ public class NPC : MonoBehaviour , IInteraction
 
     public void Interaction()
     {
-        
+        ObjLocator.instance.GetDialogManager().SetupDialog(idNPC);
     }
 
     public string GetName()
     {
         return nameNPC;
+    }
+
+    public string GetNameAction()
+    {
+        return "Говорить";
     }
 }
 

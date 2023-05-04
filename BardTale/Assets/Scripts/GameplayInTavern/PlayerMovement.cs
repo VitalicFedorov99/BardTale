@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
 
-
+        if(ObjLocator.instance.GetStateMachineGame().GetState()==StateInMainGame.Game)
         ManagePlayer();
 
     }

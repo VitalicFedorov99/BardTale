@@ -40,7 +40,8 @@ public class CameraPlayer : MonoBehaviour
 
     private void Update()
     {
-        Rotate();
+        if (ObjLocator.instance.GetStateMachineGame().GetState() == StateInMainGame.Game)
+            Rotate();
 
     }
     private void Setup()

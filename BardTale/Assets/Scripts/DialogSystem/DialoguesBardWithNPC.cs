@@ -8,4 +8,8 @@ public class DialoguesBardWithNPC : ScriptableObject
     [TextArea]
     public List<string> dialogues;
     public int id;
+
+    public bool isMiniGame;
+    public int numberDialogueWin;
+    public int numberDialogueLose;
 }

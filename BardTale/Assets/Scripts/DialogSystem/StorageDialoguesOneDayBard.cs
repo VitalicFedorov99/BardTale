@@ -10,13 +10,21 @@ public class StorageDialoguesOneDayBard : MonoBehaviour
 
     public List<string> GetDialogues(int id)
     {
-        int counter = 0;
-        foreach (var npc in idNPC)
-        {
-            if (npc == id)
-                break;
-            counter++;
-        }
-        return dialogues[counter].dialogues;
+        return dialogues[id].dialogues;
     }
+
+    public bool CheckMiniGame(int id, out int lose, out int win)
+    {
+        lose = 0; win = 0;
+
+
+        if (dialogues[id].isMiniGame)
+        {
+            lose = dialogues[id].numberDialogueLose;
+            win = dialogues[id].numberDialogueWin;
+        }
+        return dialogues[id].isMiniGame;
+    }
+
+
 }

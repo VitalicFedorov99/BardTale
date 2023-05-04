@@ -24,13 +24,15 @@ public class ManagerGameDialog : MonoBehaviour
     [SerializeField] private TMP_Text textScorePlayer;
     [SerializeField] private TMP_Text textScoreEnemy;
 
+    [SerializeField] private GameObject buttonEndStep;
+
+
     [SerializeField] private StateGame stateGame = StateGame.Preparation;
 
 
     [SerializeField] private Manager21Score manager;
     [SerializeField] private GameObject gameBoard;
 
-    private bool isEndGame = false;
     private int counterPlayer;
     private int counterEnemy;
     private int maxScore;
@@ -56,7 +58,16 @@ public class ManagerGameDialog : MonoBehaviour
     public void Setup(int maxScore)
     {
         this.maxScore = maxScore;
-        isEndGame = false;
+
+        scoreEnemy = 0;
+        scorePlayer = 0;
+        CountScore();
+    }
+
+    public void OpenNewGame() 
+    {
+        Setup(5);
+        Open();
     }
 
     public void Open() 
@@ -65,6 +76,7 @@ public class ManagerGameDialog : MonoBehaviour
         textScoreEnemy.gameObject.SetActive(true);
         textScorePlayer.gameObject.SetActive(true);
         gameBoard.SetActive(true);
+        buttonEndStep.SetActive(true);
         Preparation();
     }
 
@@ -74,6 +86,7 @@ public class ManagerGameDialog : MonoBehaviour
         textScoreEnemy.gameObject.SetActive(false);
         textScorePlayer.gameObject.SetActive(false);
         gameBoard.SetActive(false);
+        buttonEndStep.SetActive(false);
     }
 
     public void Battle()
@@ -94,14 +107,16 @@ public class ManagerGameDialog : MonoBehaviour
                 MoveChipEnemy(placeEnemy[i].GetChip(), i);
             }
 
-        /*    if (placeEnemy[i].GetChip() == null && placePlayer[i].GetChip() != null)
-            {
-                MoveChipsPlayer(placePlayer[i].GetChip(), i);
-            }*/
         }
 
+        StartCoroutine(IEOpenGame21());
        // CountScore();
        // Preparation();
+    }
+    IEnumerator IEOpenGame21() 
+    {
+        yield return new WaitForSeconds(0.5f);
+        OpenGame21Score();
     }
 
 
@@ -146,8 +161,8 @@ public class ManagerGameDialog : MonoBehaviour
         scorePlayer += result;
         manager.CloseGame();
         Clear();
-        CountScore();
         Open();
+        CountScore();
     }
 
     public void StepEnemy()
@@ -256,13 +271,13 @@ public class ManagerGameDialog : MonoBehaviour
 
         for(int i = 0; i < chipsPlayer.Count; i++) 
         {
-            chipsPlayer[i].transform.position = new Vector3(150, 150, 150);
+            chipsPlayer[i].transform.position = new Vector3(1000000, 150, 150);
         }
 
 
         for (int i = 0; i < chipsEnemy.Count; i++)
         {
-            chipsEnemy[i].transform.position = new Vector3(0, 0, 150);
+            chipsEnemy[i].transform.position = new Vector3(10000000, 0, 150);
         }
         for ( int i=0;i<placeEnemy.Count; i++) 
         {
@@ -320,12 +335,16 @@ public class ManagerGameDialog : MonoBehaviour
 
     private void Lose() 
     {
-        isEndGame = true;
+        stateGame = StateGame.EndGame;
+        Close();
+        ObjLocator.instance.GetDialogManager().LoseMiniGame();
     }
 
     private void Win() 
     {
-        isEndGame = true;
+        stateGame = StateGame.EndGame;
+        Close();
+        ObjLocator.instance.GetDialogManager().WinMiniGame();
     }
     private void CheckEndGame()
     {
