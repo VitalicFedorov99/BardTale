@@ -16,6 +16,7 @@ public class DialogManager : MonoBehaviour
     [SerializeField] private List<Button> objButtons;
     [SerializeField] private List<GameObject> imageButtons;
     [SerializeField] private List<GameObject> imageGame;
+    [SerializeField] private List<GameObject> imageMoney;
     [SerializeField] private GameObject closeButton;
     [SerializeField] private GameObject dialogNPCWindow;
     [SerializeField] private GameObject dialogBardWindow;
@@ -30,7 +31,7 @@ public class DialogManager : MonoBehaviour
     [SerializeField] private List<string> allTextBard;
     [SerializeField] private List<string> allTextNPC;
 
-    private int idNPC = 0;
+    [SerializeField] private int idNPC = 0;
 
     private int numberDialogue;
     private string[] currentDialogueVariant = new string[3];
@@ -42,6 +43,12 @@ public class DialogManager : MonoBehaviour
     private int loseInMiniGame;
     private int winMiniGame;
     private bool isMiniGame;
+
+
+    private bool isBuy;
+    private int summa;
+    private int numberDialogBuy;
+    int numberBuy;
 
     //private string[]
     public void SetupDialog(int id)
@@ -88,6 +95,7 @@ public class DialogManager : MonoBehaviour
         allTextBard = storages[numberDay - 1].GetDialoguesBard(id);
         allTextNPC = storages[numberDay - 1].GetDialogueNPC(id);
         isMiniGame = storages[numberDay - 1].CheckMiniGame(id, out loseInMiniGame, out winMiniGame);
+        isBuy = storages[numberDay - 1].CheckIsBuy(id, out summa, out numberDialogBuy);
     }
 
     private void ClearCurrentDialogueVariant()
@@ -104,6 +112,7 @@ public class DialogManager : MonoBehaviour
         var count = 0;
         var flag = false;
         numberGame = 5;
+        numberBuy = 5;
         foreach (string text in allTextBard)
         {
             string[] substrings = text.Split(delimiter);
@@ -130,7 +139,7 @@ public class DialogManager : MonoBehaviour
                     if (flag)
                     {
                         currentDialogueVariant[counterCurrentDialogue] = substrings[0];
-                        if (substrings[2] != "g")
+                        if (substrings[2] != "g" && substrings[2] != "m")
                         {
                             numberNextDialog[counterCurrentDialogue] = Convert.ToInt32(substrings[2]);
                         }
@@ -138,18 +147,30 @@ public class DialogManager : MonoBehaviour
                         {
                             numberGame = counterCurrentDialogue;
                         }
+
+                        if (substrings[2] == "m")
+                        {
+                            numberBuy = counterCurrentDialogue;
+                        }
+
+
                     }
                 }
-                else 
+                else
                 {
                     currentDialogueVariant[counterCurrentDialogue] = substrings[0];
-                    if (substrings[2] != "g")
+                    if (substrings[2] != "g" && substrings[2] != "m")
                     {
                         numberNextDialog[counterCurrentDialogue] = Convert.ToInt32(substrings[2]);
                     }
                     if (substrings[2] == "g")
                     {
                         numberGame = counterCurrentDialogue;
+                    }
+
+                    if (substrings[2] == "m")
+                    {
+                        numberBuy = counterCurrentDialogue;
                     }
                 }
 
@@ -169,36 +190,58 @@ public class DialogManager : MonoBehaviour
             string[] substrings = text.Split(delimiter);
             if (Convert.ToInt32(substrings[1]) == numberDialogue)
             {
-                currentDialogNPC = substrings[0];
+
 
                 if (substrings[2] != "norm")
                 {
-                    Debug.LogError("А теперь сюда попал");
+
                     switch (substrings[2])
                     {
                         case "p":
                             var count = Convert.ToInt32(substrings[3]);
                             var flag = ObjLocator.instance.GetQuestObserver().CheckPositiveQuest(count);
                             if (flag)
+                            {
                                 ObjLocator.instance.GetQuestObserver().AddPositionQuest(TypeQuest.Positive);
+                                currentDialogNPC = substrings[0];
+                                ObjLocator.instance.GetDialogMemeory().SetLastMessage(idNPC, currentDialogNPC);
+                            }
                             break;
                         case "neit":
                             count = Convert.ToInt32(substrings[3]);
                             flag = ObjLocator.instance.GetQuestObserver().CheckNeutralQuest(count);
                             if (flag)
+                            {
                                 ObjLocator.instance.GetQuestObserver().AddPositionQuest(TypeQuest.Neutral);
+                                currentDialogNPC = substrings[0];
+                                ObjLocator.instance.GetDialogMemeory().SetLastMessage(idNPC, currentDialogNPC);
+                            }
                             break;
                         case "negat":
                             count = Convert.ToInt32(substrings[3]);
                             flag = ObjLocator.instance.GetQuestObserver().CheckNegativeQuest(count);
                             if (flag)
+                            {
                                 ObjLocator.instance.GetQuestObserver().AddPositionQuest(TypeQuest.Negative);
+                                currentDialogNPC = substrings[0];
+                                ObjLocator.instance.GetDialogMemeory().SetLastMessage(idNPC, currentDialogNPC);
+                            }
                             break;
                     }
                 }
+                else
+                {
+                    currentDialogNPC = substrings[0];
+                    ObjLocator.instance.GetDialogMemeory().SetLastMessage(idNPC, currentDialogNPC);
+                }
             }
         }
+
         textDialogue.text = currentDialogNPC;
+        if (currentDialogNPC == "") 
+        {
+            textDialogue.text = ObjLocator.instance.GetDialogMemeory().GetLastMessage(idNPC);
+        }
     }
 
     private void SetupWindowDialogueBard()
@@ -206,6 +249,7 @@ public class DialogManager : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             imageGame[i].SetActive(false);
+            imageMoney[i].SetActive(false);
             if (currentDialogueVariant[i] != "")
             {
                 textButtons[i].text = currentDialogueVariant[i];
@@ -219,6 +263,10 @@ public class DialogManager : MonoBehaviour
                     {
                         textButtons[i].text += " (Победа)";
                     }
+                }
+                if (i == numberBuy)
+                {
+                    imageGame[i].SetActive(true);
                 }
             }
 
@@ -260,6 +308,16 @@ public class DialogManager : MonoBehaviour
         if (i == numberGame)
         {
             OpenMiniGame();
+        }
+        if (i == numberBuy)
+        {
+            if (ObjLocator.instance.GetInventary().CheckMoneyForSubstraction(summa))
+            {
+                Debug.Log("зашел");
+                ObjLocator.instance.GetInventary().Subtraction(summa);
+                ObjLocator.instance.GetDialogMemeory().SetNumberDialogs(idNPC, numberDialogBuy);
+                UpdateDialog();
+            }
         }
         else
             UpdateDialog();

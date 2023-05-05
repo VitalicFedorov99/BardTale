@@ -20,6 +20,9 @@ public class ObjLocator : MonoBehaviour
 
     [SerializeField] private ManagerGame managerGame;
 
+    [SerializeField] private NPCStorage npcStorage;
+
+    [SerializeField] private OutCome outcome;
     public ManagerGameDialog GetManagerGameDialog() => managerGameDialog;
     public DialogManager GetDialogManager() => dialogManager;
 
@@ -32,6 +35,10 @@ public class ObjLocator : MonoBehaviour
     public QuestObserver GetQuestObserver() => questObserver;
 
     public ManagerGame GetManagerGame() => managerGame;
+
+    public NPCStorage GetNPCStorage() => npcStorage;
+
+    public OutCome GetOutCome() => outcome;
 
     private void Awake()
     {

@@ -16,16 +16,18 @@ public class Inventary : MonoBehaviour
         if (money > 0)
         {
             countMoney += money;
-            textMoney.text = money.ToString();
+            textMoney.text = countMoney.ToString();
         }
     }
 
     public void Subtraction(int money)
     {
+        Debug.Log(money);
         if (money <= countMoney)
         {
-            countMoney -= money;
-            textMoney.text = money.ToString();
+            
+            countMoney = countMoney- money;
+            textMoney.text = countMoney.ToString();
         }
     }
 

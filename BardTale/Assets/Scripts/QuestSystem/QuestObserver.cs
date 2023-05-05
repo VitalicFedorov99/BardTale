@@ -52,20 +52,28 @@ public class QuestObserver : MonoBehaviour
         return false;
     }
 
-    public void AddPositionQuest(TypeQuest typeQuest) 
+
+
+    public void AddPositionQuest(TypeQuest typeQuest)
     {
-        switch (typeQuest) 
+        bool flag = false;
+        switch (typeQuest)
         {
             case TypeQuest.Negative:
-                questNegative.AddCurrentPositionQuest();
+                flag = questNegative.AddCurrentPositionQuest();
                 break;
             case TypeQuest.Neutral:
-                questNeutral.AddCurrentPositionQuest();
+                flag = questNeutral.AddCurrentPositionQuest();
                 break;
             case TypeQuest.Positive:
-                questPositive.AddCurrentPositionQuest();
+                flag = questPositive.AddCurrentPositionQuest();
                 break;
         }
+        if (flag) 
+        {
+            BreakOtherQuest(typeQuest);
+        }
+
     }
 
     public bool CheckCurrentQuest(out TypeQuest typeQuest)
@@ -95,15 +103,18 @@ public class QuestObserver : MonoBehaviour
                 currentQuest = questNegative;
                 blockQuest = true;
                 typeCurrentQuest = TypeQuest.Negative;
+                ObjLocator.instance.GetOutCome().IncludeConsequences(typeQuest);
                 break;
             case TypeQuest.Neutral:
                 currentQuest = questNeutral;
                 typeCurrentQuest = TypeQuest.Neutral;
+                ObjLocator.instance.GetOutCome().IncludeConsequences(typeQuest);
                 blockQuest = true;
                 break;
             case TypeQuest.Positive:
                 currentQuest = questPositive;
                 typeCurrentQuest = TypeQuest.Positive;
+                ObjLocator.instance.GetOutCome().IncludeConsequences(typeQuest);
                 blockQuest = true;
                 break;
         }

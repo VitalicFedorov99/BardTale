@@ -14,4 +14,7 @@ public class ManagerGame : MonoBehaviour
     public void AddScore(int point) => score += point;
 
     public int GetScore() => score;
+
+    
+
 }

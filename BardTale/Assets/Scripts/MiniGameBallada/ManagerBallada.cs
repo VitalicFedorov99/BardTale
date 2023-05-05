@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.UI;
+
 public class ManagerBallada : MonoBehaviour
 {
     //  [SerializeField] private
@@ -24,6 +26,11 @@ public class ManagerBallada : MonoBehaviour
     [SerializeField] private int score = 30;
     [SerializeField] private StateGame stateGame;
 
+
+    [SerializeField] private GameObject portal;
+    [SerializeField] private List<Text> textNameBallads;
+    [SerializeField] private List<Image> imagesBallada;
+    [SerializeField] private GameObject choosePanel;
     
     public void CompareCard(int i)
     {
@@ -51,9 +58,30 @@ public class ManagerBallada : MonoBehaviour
         SetupCurrentCard();
     }
 
+
+    public void ChooseBallada(int number) 
+    {
+        switch (number) 
+        {
+            case 0:
+                Debug.Log("Героическая");
+                break;
+            case 1:
+                Debug.Log("Любовная");
+                break;
+            case 2:
+                Debug.Log("Бандитская");
+                break;
+        }
+    }
+
+    public void OpenChooseBalladsPanel() 
+    {
+        
+    }
     private void Start()
     {
-        SetupGame();
+       // SetupGame();
     }
     public void SetupGame()
     {

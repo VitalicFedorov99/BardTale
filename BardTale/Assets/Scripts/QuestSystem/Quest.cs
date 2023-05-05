@@ -16,13 +16,14 @@ public class Quest
 
 
 
-    public void AddCurrentPositionQuest()
+    public bool AddCurrentPositionQuest()
     {
         currentPositionQuest++;
         if (currentPositionQuest == breakOtherQuestNumber) 
         {
-            
+            return true;
         }
+        return false;
     }
 
     public int GetCurrentPositionQuest() => currentPositionQuest;

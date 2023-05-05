@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UnityEngine.AI;
-public class NPC : MonoBehaviour , IInteraction
+public class NPC : MonoBehaviour, IInteraction
 {
     [SerializeField] protected string nameNPC;
     [SerializeField] protected Animator animator;
@@ -16,7 +16,7 @@ public class NPC : MonoBehaviour , IInteraction
 
 
     private GameObject pointWalk;
-    
+
 
     public int GetIdNPC() => idNPC;
     public void Walk(GameObject point)
@@ -32,46 +32,46 @@ public class NPC : MonoBehaviour , IInteraction
         animator.SetBool("Clap", true);
     }
 
-    public void SitTalk() 
+    public void SitTalk()
     {
         animator.SetTrigger("Talk");
     }
 
 
-    public void Talk(int number) 
+    public void Talk(int number)
     {
         animator.SetTrigger("Talk");
         animator.SetInteger("Type", number);
     }
-    public void Clap(int number) 
+    public void Clap(int number)
     {
         animator.SetBool("Clap", true);
         animator.SetInteger("TypeClap", number);
     }
 
-   /* public void SitDown() 
-    {
-        animator.SetTrigger("SitDown");
-    }*/
+    /* public void SitDown() 
+     {
+         animator.SetTrigger("SitDown");
+     }*/
 
-    public void Dance(int number) 
+    public void Dance(int number)
     {
         animator.SetBool("Dance", true);
         animator.SetInteger("TypeDance", number);
     }
 
-    public void Angry(int number) 
+    public void Angry(int number)
     {
         animator.SetBool("Angry", true);
         animator.SetInteger("TypeAngry", number);
     }
 
-    public void Angry() 
+    public void Angry()
     {
         animator.SetBool("Angry", true);
     }
 
-    public void EndAngry() 
+    public void EndAngry()
     {
         animator.SetBool("Angry", false);
     }
@@ -106,9 +106,27 @@ public class NPC : MonoBehaviour , IInteraction
         Setup();
     }
 
+
+    private void Rotate(Transform target)
+    {
+        //transform.LookAt()
+    }
+
+    private void Rotate()
+    {
+        GameObject target = ObjLocator.instance.GetNPCStorage().GetPlayer();
+        Vector3 targetPosition = target.transform.position;
+        Vector3 direction = targetPosition - transform.position;
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        transform.rotation = lookRotation;
+    }
     public void Interaction()
     {
         ObjLocator.instance.GetDialogManager().SetupDialog(idNPC);
+        if (state != StateNPC.Sit)
+        {
+            Rotate();
+        }
     }
 
     public string GetName()

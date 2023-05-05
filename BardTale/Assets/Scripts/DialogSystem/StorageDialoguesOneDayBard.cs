@@ -26,5 +26,18 @@ public class StorageDialoguesOneDayBard : MonoBehaviour
         return dialogues[id].isMiniGame;
     }
 
+    public bool CheckIsBuy(int id,out int summa,out int numberDialogBuy) 
+    {
+        summa = 0;
+        numberDialogBuy = 1;
+        if (dialogues[id].IsBuy) 
+        {
+            Debug.LogError("зашел");
+            summa = dialogues[id].summa;
+            numberDialogBuy = dialogues[id].numberDialogueBuy;
+        }
+        return dialogues[id].IsBuy;
+    }
+
 
 }

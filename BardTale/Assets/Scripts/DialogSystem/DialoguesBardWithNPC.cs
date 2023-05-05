@@ -12,4 +12,8 @@ public class DialoguesBardWithNPC : ScriptableObject
     public bool isMiniGame;
     public int numberDialogueWin;
     public int numberDialogueLose;
+
+    public bool IsBuy;
+    public int summa;
+    public int numberDialogueBuy;
 }

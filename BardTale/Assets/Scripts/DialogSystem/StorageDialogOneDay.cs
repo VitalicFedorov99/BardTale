@@ -23,4 +23,9 @@ public class StorageDialogOneDay : MonoBehaviour
     {
         return storage.CheckMiniGame(id, out lose, out win);
     }
+
+    public bool CheckIsBuy(int id,out int summa,out int numberDialogBuy) 
+    {
+        return storage.CheckIsBuy(id, out summa, out numberDialogBuy);
+    }
 }

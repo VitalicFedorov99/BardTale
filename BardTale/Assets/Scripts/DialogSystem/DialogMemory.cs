@@ -7,7 +7,7 @@ public class DialogMemory : MonoBehaviour
     [SerializeField] private List<int> idNPC;
     [SerializeField] private List<int> numberDialogs;
     [SerializeField] private List<bool> winGame;
-
+    [SerializeField] private List<string> lastMassege;
 
     public void ClearDialogue() 
     {
@@ -32,6 +32,9 @@ public class DialogMemory : MonoBehaviour
 
     public void SetNumberDialogs(int id, int number) => numberDialogs[id] = number;
 
+    public void SetLastMessage(int id, string dialog) => lastMassege[id] = dialog;
+
+    public string GetLastMessage(int id) => lastMassege[id];
 
     public bool GetWinGame(int id) => winGame[id];
 }
